@@ -1,0 +1,158 @@
+#: import FadeTransition kivy.uix.screenmanager.WipeTransition
+
+<MainScreen>:
+    name: "main"
+    GridLayout:
+        cols: 2
+        rows: 2
+        size: root.size
+
+        Button:
+            text: 'connect'
+            on_press: app.root.current = "connect"
+        Button:
+            text: 'control'
+            on_press: app.root.current = "control"
+        Button:
+            text: 'command'
+            on_press: app.root.current = "command"
+        Button:
+            text: 'identify'
+            on_press: app.identify()
+
+<ConnectScreen>:
+    name: "connect"
+    GridLayout:
+        cols: 1
+        rows: 4
+        size: root.size
+
+        TextInput:
+            id: ip
+            font_size: 40
+            hint_text: "ip"
+        TextInput:
+            id: login
+            font_size: 40
+            hint_text: "login"
+        TextInput:
+            id: password
+            font_size: 40
+            hint_text: 'password'
+            password: True
+        Button:
+            on_press: app.get_credentials(ip.text, login.text, password.text)
+            text: 'connect'
+
+<ControlScreen>:
+    name: "control"
+    TabbedPanel:
+        do_default_tab: False
+        tab_width: self.size[0]/len(self.tab_list)
+
+        TabbedPanelItem:
+            text: 'mouse'
+            GridLayout:
+                cols: 1
+                rows: 4
+                size: root.size
+
+                GridLayout:
+                    cols: 3
+                    rows: 1
+                    GridLayout
+                    Button:
+                        text: 'up'
+                        on_press: app.long_press_up()
+                        on_release: app.long_release_up()
+                    GridLayout
+
+                GridLayout:
+                    cols: 3
+                    rows: 1
+                    Button:
+                        text: 'left'
+                        on_press: app.long_press_left()
+                        on_release: app.long_release_left()
+                    GridLayout
+                    Button:
+                        text: 'right'
+                        on_press: app.long_press_right()
+                        on_release: app.long_release_right()
+
+                GridLayout:
+                    cols: 3
+                    rows: 1
+                    GridLayout
+                    Button:
+                        id: bt
+                        text: 'down'
+                        on_press: app.long_press_down()
+                        on_release: app.long_release_down()
+                    GridLayout
+
+                GridLayout:
+                    cols: 2
+                    rows: 1
+                    Button:
+                        text: 'left click'
+                        on_press: app.post_signal(13)
+                    Button:
+                        text: 'rightclick'
+                        on_press: app.post_signal(14)
+
+        TabbedPanelItem:
+            text: 'audio/video'
+            GridLayout:
+                cols: 2
+                rows: 2
+                size: root.size
+
+                Button:
+                    text: 'volume up'
+                    on_press: app.post_signal(1)
+                Button:
+                    text: 'volume down'
+                    on_press: app.post_signal(2)
+
+                Button:
+                    text: 'mute'
+                    on_press: app.post_signal(3)
+                Button:
+                    text: 'monitor'
+                    on_press: app.post_signal(4)
+
+        TabbedPanelItem:
+            text: 'system'
+            GridLayout:
+                cols: 2
+                rows: 2
+                size: root.size
+
+                Button:
+                    text: 'reboot'
+                    on_press: app.post_signal(5)
+                Button:
+                    text: 'shutdown'
+                    on_press: app.post_signal(6)
+                Button:
+                    text: 'logout'
+                    on_press: app.post_signal(7)
+                Button:
+                    text: 'recycle'
+                    on_press: app.post_signal(8)
+
+<CommandScreen>:
+    name: "command"
+    GridLayout:
+        cols: 1
+        rows: 2
+        size: root.size
+
+        TextInput:
+            id: execute
+            font_size: 40
+            hint_text: 'execute python code'
+        Button:
+            on_press: app.execute(execute.text)
+            text: 'execute'
